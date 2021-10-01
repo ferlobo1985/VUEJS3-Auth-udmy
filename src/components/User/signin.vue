@@ -48,7 +48,8 @@
                 if(this.type){
                     console.log('sign in')
                 }else{
-                    console.log('sign up')
+                    this.$store.dispatch('user/signup',this.formdata)
+
                 }
                 console.log(this.formdata)
             }
