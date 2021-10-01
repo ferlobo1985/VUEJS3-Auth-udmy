@@ -46,12 +46,10 @@
         methods: {
             onSubmit () {
                 if(this.type){
-                    console.log('sign in')
+                    this.$store.dispatch('user/signin',this.formdata)
                 }else{
                     this.$store.dispatch('user/signup',this.formdata)
-
                 }
-                console.log(this.formdata)
             }
         },
         mounted(){
