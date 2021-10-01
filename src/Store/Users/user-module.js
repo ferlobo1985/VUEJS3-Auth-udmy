@@ -10,14 +10,18 @@ const userModule = {
             email:'',
             token:'',
             refresh:'',
-            loading:true
+            loading:true,
+            error:[false,'']
         }
     },
     getters:{
         isAuth(state){
             if(state.email) { return true}
             return false;
-        }   
+        },
+        getError(state){
+            return state.error
+        }
     },
     mutations:{
         authUser(state,payload){
@@ -29,6 +33,9 @@ const userModule = {
             state.email = null;
             state.token = null;
             state.refresh = null;
+        },
+        setError(state,payload){
+            state.error = [true, payload]
         }
     },
     actions:{
@@ -54,9 +61,11 @@ const userModule = {
                 });
 
                 context.commit('authUser',response.data);
-                context.dispatch('setToken',response.data)
+                context.dispatch('setToken',response.data);
+                router.push('/dashboard');
             } catch(error){
                 console.log(error);
+                context.commit('setError','Opp, check your data');
             }
         },
         signup(context,payload){
@@ -66,9 +75,13 @@ const userModule = {
             })
             .then( response => {
                 context.commit('authUser',response.data);
-                context.dispatch('setToken',response.data)
+                context.dispatch('setToken',response.data);
+                router.push('/dashboard');
             })
-            .catch( error => console.log(error))
+            .catch( error => { 
+                console.log(error);
+                context.commit('setError','Opp, sign up error');
+            })
         },
         async autoLogin(context){
             try{
@@ -95,8 +108,9 @@ const userModule = {
                         context.state.loading = false;
                     }
                 }
-            }catch(error){
+            } catch(error){
                 console.log(error);
+            } finally {
                 context.state.loading = false;
             }
         }
