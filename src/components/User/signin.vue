@@ -51,9 +51,6 @@
                     this.$store.dispatch('user/signup',this.formdata)
                 }
             }
-        },
-        mounted(){
-            console.log(this.$store.state.user.name)
         }
     }
 </script>

@@ -1,5 +1,6 @@
 /* eslint-disable */
 import axios from 'axios';
+import router from '../../routes';
 const FAPI_KEY = 'AIzaSyB_EIMcZEg8sHDJtMk9qSxnymdfaWZXGuc';
 
 const userModule = {
@@ -16,12 +17,27 @@ const userModule = {
             state.email = payload.email;
             state.token = payload.idToken;
             state.refresh = payload.refreshToken;
+        },
+        resetAuth(state){
+            state.email = null;
+            state.token = null;
+            state.refresh = null;
         }
     },
     actions:{
+        removeToken(){
+            localStorage.removeItem("token");
+            localStorage.removeItem("refresh");
+        },
         setToken(context,payload){
             localStorage.setItem("token",payload.idToken);
             localStorage.setItem("refresh",payload.refreshToken);
+        },
+        signout(context){
+            context.commit('resetAuth');
+            context.dispatch('removeToken');
+
+            router.push('/');
         },
         async signin(context,payload){
             try{

@@ -13,8 +13,14 @@
                         <router-link to="/signin">Sign in</router-link>
                     </li>
                     <li>
+                       <div :style="{'display':'inline'}"
+                        @click="signout"
+                       >Sign out</div>
+                    </li>
+                    <li>
                         <router-link to="/dashboard">Dashboard</router-link>
                     </li>
+                    
                 </ul>
             </nav>
         </div>
@@ -23,6 +29,10 @@
 
 <script>
     export default {
-        
+        methods:{
+            signout(){
+                this.$store.dispatch('user/signout');
+            }
+        }
     }
 </script>
