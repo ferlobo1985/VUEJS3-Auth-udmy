@@ -12,6 +12,9 @@
   export default {
     components:{
       appHeader
+    },
+    created(){
+      this.$store.dispatch('user/autoLogin');
     }
   }
 </script>

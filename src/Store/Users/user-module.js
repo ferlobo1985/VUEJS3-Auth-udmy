@@ -68,6 +68,32 @@ const userModule = {
                 context.dispatch('setToken',response.data)
             })
             .catch( error => console.log(error))
+        },
+        async autoLogin(context){
+            try{
+                const refreshToken = localStorage.getItem("refresh");
+                if(refreshToken){
+                    const token = await axios.post(`https://securetoken.googleapis.com/v1/token?key=${FAPI_KEY}`,{
+                        grant_type:'refresh_token',
+                        refresh_token:refreshToken
+                    });
+
+                    const user = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FAPI_KEY}`,{
+                        idToken: token.data.id_token
+                    });
+
+                    const newTokens = {
+                        email: user.data.users[0].email,
+                        idToken: token.data.id_token,
+                        refreshToken: token.data.refresh_token,
+                    };
+
+                    context.commit('authUser',newTokens);
+                    context.dispatch('setToken',newTokens);
+                }
+            }catch(error){
+                console.log(error);
+            }
         }
     }
 }
