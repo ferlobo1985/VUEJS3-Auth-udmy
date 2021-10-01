@@ -1,21 +1,24 @@
 <template>
   <div>
     <app-header></app-header>
-    <router-view/>
+    <router-view v-if="!this.$store.state.user.loading"/>
+    <loader v-else></loader>
   </div>
 </template>
 
 
 <script>
   import appHeader from './components/Header/Header.vue';
+  import Loader from './components/Utils/loader.vue'
 
   export default {
     components:{
-      appHeader
+      appHeader,
+      Loader
     },
-    created(){
-      this.$store.dispatch('user/autoLogin');
-    }
+    // created(){
+    //   this.$store.dispatch('user/autoLogin');
+    // }
   }
 </script>
 
