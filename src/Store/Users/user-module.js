@@ -12,6 +12,12 @@ const userModule = {
             refresh:''
         }
     },
+    getters:{
+        isAuth(state){
+            if(state.email) { return true}
+            return false;
+        }   
+    },
     mutations:{
         authUser(state,payload){
             state.email = payload.email;
